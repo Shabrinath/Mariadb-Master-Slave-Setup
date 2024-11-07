@@ -13,7 +13,7 @@ For this setup:
 
 ## 1. Configure the Master Server
 
-1. **Edit the MariaDB configuration file** on the master (`/etc/my.cnf` or `/etc/mysql/my.cnf`):
+1. **Edit the MariaDB configuration file** on the master (`/etc/my.cnf` or `/etc/mysql/my.cnf` or `/etc/my.cnf.d/server.cnf`):
     ```ini
     [mysqld]
     server-id=1             # Unique ID for the master (must be unique in the replication setup)
@@ -29,8 +29,8 @@ For this setup:
 3. **Create a Replication User**:
     Log in to MariaDB on the master and run the following commands:
     ```sql
-    CREATE USER 'repl_user'@'192.168.1.101' IDENTIFIED BY 'password';
-    GRANT REPLICATION SLAVE ON *.* TO 'repl_user'@'192.168.1.101';
+    CREATE USER 'repl_user'@'%' IDENTIFIED BY 'password';
+    GRANT REPLICATION SLAVE ON *.* TO 'repl_user'@'%';
     FLUSH PRIVILEGES;
     ```
 
@@ -98,6 +98,7 @@ For this setup:
 - Ensure firewall settings allow MariaDB traffic between the master and slave.
 - If replication isn’t working, check `SHOW SLAVE STATUS\G` on the slave for errors.
 - Make sure both servers have unique `server-id` values.
+- Make sure 3306 port is open on master
 
 ---
 
